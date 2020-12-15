@@ -3,9 +3,10 @@ import morgan from 'morgan'
 import helmet from 'helmet'
 import cors from 'cors'
 import path from 'path'
+import bodyParser from 'body-parser'
 import { createStream } from 'rotating-file-stream'
 import dotenv from 'dotenv'
-import connectDatabase from './configs/db.config.js'
+// import connectDatabase from './configs/db.config.js'
 import routes from './src/routes/route.js';
 dotenv.config()
 
@@ -21,6 +22,9 @@ const accessLogStream = createStream("access.log", {
     path: path.join(__dirname, "log")
 })
 
+// use middlewares
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet())
 app.use(isProd ? morgan('combined', { stream: accessLogStream }) : morgan('dev'))
 app.use(cors())
