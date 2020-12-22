@@ -26,5 +26,15 @@ router.post("/", async (req, res) => {
     res.json(imageList)
 });
 
+router.post("/cmd", async (req, res) => {
+    let cmdString = req.body.cmdString.toString(),
+        ram = req.body.ram,
+        containerName = req.body.containerName
+    let string = `${cmdString} ${ram}:${containerName}`
+    console.log(string);
+    let cmdResult = await remoteCtrl.runCmdString(string)
+    res.send(cmdResult.data)
+})
+
 
 export default router
